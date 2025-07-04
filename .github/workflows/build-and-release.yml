@@ -15,7 +15,6 @@ on:
   push:
     branches:
       - main
-      - peter/fix-ci
     tags:
       - 'v*'
   pull_request:
