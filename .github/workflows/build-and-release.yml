@@ -19,7 +19,6 @@ permissions:
   contents: write
 
 jobs:
- jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
