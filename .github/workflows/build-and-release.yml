@@ -71,9 +71,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.14.2
+      - name: Download wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
       - name: Install py_opw_kinematics
         run: |
-          WHL_FILE=$(ls dist/*cp314*.whl)
+          ls -la dist || true
+          # Prefer a wheel for CPython 3.14, fallback to any wheel present
+          WHL_FILE=$(ls dist/*cp314*.whl 2>/dev/null || ls dist/*.whl | head -n1)
+          if [ -z "$WHL_FILE" ]; then
+            echo "No wheel file found in dist/"; exit 1
+          fi
+          echo "Using wheel: $WHL_FILE"
           pip install "${WHL_FILE}[test]"
       - name: Run tests with pytest
         run: pytest
