@@ -78,8 +78,12 @@ jobs:
       - name: Install py_opw_kinematics
         run: |
           ls -la dist || true
-          # Prefer a wheel for CPython 3.14, fallback to any wheel present
-          WHL_FILE=$(ls dist/*cp314*.whl 2>/dev/null || ls dist/*.whl | head -n1)
+          # The downloaded artifacts may be extracted into subdirectories (e.g. dist/wheels-linux-x86_64).
+          # Prefer a wheel for CPython 3.14, fallback to any wheel present within the dist tree.
+          WHL_FILE=$(find dist -type f -name '*cp314*.whl' -print -quit)
+          if [ -z "$WHL_FILE" ]; then
+            WHL_FILE=$(find dist -type f -name '*.whl' -print -quit)
+          fi
           if [ -z "$WHL_FILE" ]; then
             echo "No wheel file found in dist/"; exit 1
           fi
