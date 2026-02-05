@@ -31,7 +31,7 @@ jobs:
       - name: Lint Python code with ruff
         run: ruff check .
 
-  linux-x64:
+  linux:
     needs: [lint]
     runs-on: ${{ matrix.platform.runner }}
     strategy:
@@ -64,7 +64,7 @@ jobs:
           path: dist
 
   test:
-    needs: [linux-x64]
+    needs: [linux]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -177,7 +177,7 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch' }}
-    needs: [linux, musllinux, windows, macos, sdist]
+    needs: [linux, windows, macos, sdist]
     permissions:
       # Use to sign the release artifacts
       id-token: write
