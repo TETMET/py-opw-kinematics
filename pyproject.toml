@@ -47,3 +47,11 @@ include = ["python/py_opw_kinematics/py.typed"]
 Homepage = "https://github.com/CEAD-group/py-opw-kinematics"
 Repository = "https://github.com/CEAD-group/py-opw-kinematics.git"
 Documentation = "https://github.com/CEAD-group/py-opw-kinematics/blob/main/README.md"
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+
+[tool.lint]
+select = ["F","N","E","W"]
+fixable = ["ALL"]

@@ -1,6 +1,6 @@
-from py_opw_kinematics import Robot, KinematicModel, BaseConfig, ToolConfig
 import numpy as np
 import pytest
+from py_opw_kinematics import Robot, KinematicModel, BaseConfig, ToolConfig
 
 
 @pytest.fixture
