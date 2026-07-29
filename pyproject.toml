@@ -55,3 +55,4 @@ line-ending = "auto"
 [tool.lint]
 select = ["F","N","E","W"]
 fixable = ["ALL"]
+exclude = ["_internal.pyi"]
