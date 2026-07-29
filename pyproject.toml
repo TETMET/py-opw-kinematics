@@ -55,4 +55,6 @@ line-ending = "auto"
 [tool.lint]
 select = ["F","N","E","W"]
 fixable = ["ALL"]
-exclude = ["_internal.pyi"]
+
+[tool.lint.per-file-ignores]
+"*" = ["UP006", "PIE790", "PYI048"]
