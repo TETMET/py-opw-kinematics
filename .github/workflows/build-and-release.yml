@@ -32,6 +32,8 @@ jobs:
       #   run: uv sync
       # - name: Lint Python code with ruff
       #   run: uv run ruff check .
+      - name: Run tests with pytest
+        run: uv run pytest
 
   linux:
     needs: [lint]
@@ -81,7 +83,8 @@ jobs:
       #     pip install "${WHL_FILE}[test]"
       - name: Run tests with pytest
         run: uv run pytest
-
+      - name: Type checking with mypy
+        run: mypy python
 
   windows:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
