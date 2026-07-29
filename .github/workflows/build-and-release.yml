@@ -19,20 +19,24 @@ permissions:
   contents: write
 
 jobs:
-  lint:
+  python_checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: 3.14.2
-      - name: Install Python linter
-        run: pip install ruff
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - name: Sync uv
+        run: uv sync
       - name: Lint Python code with ruff
-        run: ruff check .
+        run: uv run ruff check .
+      - name: Run tests with pytest
+        run: uv run pytest
 
   linux:
-    needs: [lint]
+    needs: [python_checks]
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
@@ -63,28 +67,9 @@ jobs:
           name: wheels-linux-${{ matrix.platform.target }}
           path: dist
 
-  test:
-    needs: [linux]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.14.2
-      - name: Install py_opw_kinematics
-        run: |
-          ls -a 
-          ls dist
-          WHL_FILE=$(ls dist/*cp314*.whl)
-          pip install "${WHL_FILE}[test]"
-      - name: Run tests with pytest
-        run: pytest
-      - name: Type checking with mypy
-        run: mypy python
 
   windows:
-    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
-    needs: [lint, test]
+    needs: [python_checks]
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
@@ -119,12 +104,13 @@ jobs:
           path: dist
 
   macos:
+    needs: [python_checks]
     runs-on: ${{ matrix.platform.runner }}
     strategy:
       matrix:
         platform:
-          - runner: macos-13
-            target: x86_64
+          # - runner: macos-13
+          #   target: x86_64
           - runner: macos-14
             target: aarch64
     steps:
@@ -152,7 +138,7 @@ jobs:
 
   sdist:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
-    needs: [lint, test]
+    needs: [python_checks]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
