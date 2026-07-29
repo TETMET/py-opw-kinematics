@@ -28,7 +28,6 @@ jobs:
           python-version: 3.14.2
       - name: Install uv
       - run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: setup uv
         run: uv sync
       - name: Lint Python code with ruff
         run: uv ruff check .
