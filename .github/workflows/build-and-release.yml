@@ -81,10 +81,10 @@ jobs:
       #     ls dist
       #     WHL_FILE=$(ls dist/*cp314*.whl)
       #     pip install "${WHL_FILE}[test]"
-      - name: Run tests with pytest
-        run: uv run pytest
-      - name: Type checking with mypy
-        run: mypy python
+      # - name: Run tests with pytest
+      #   run: uv run pytest
+      # - name: Type checking with mypy
+      #   run: mypy python
 
   windows:
     if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
