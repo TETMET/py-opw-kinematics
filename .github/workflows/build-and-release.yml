@@ -11,7 +11,7 @@ on:
       - main
       - master
     tags:
-      - 'v'
+      - 'v*'
   pull_request:
   workflow_dispatch:
 
@@ -58,7 +58,7 @@ jobs:
         uses: PyO3/maturin-action@v1
         with:
           target: ${{ matrix.platform.target }}
-          args: --release --out dist --find-interpreter
+          args: --release --out dist --interpreter python3.14
           sccache: 'true'
           manylinux: auto
       - name: Upload wheels
